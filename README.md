@@ -122,3 +122,28 @@ So I'd like to create some type of contact object and also a root object
 }
 
 ```
+## Azure Storage
+
+- In Azure, the base service for data storage is called Azure Storage (or simply Storage). Storage is the foundational service that supports all of the other Azure services. Storage was designed to make it possible for developers to build large-scale applications by providing a storage mechanism that automatically scales to handle various application[s]’ workloads.
+
+- Storage, to put simply, is massively scalable and available to use as a service with minimal configuration.
+- Storage partitions your assets, media and data automatically across partitions. All new data you add is automatically partitioned and load balanced without manual intervention. As your application grows, Storage can automatically allocate the correct quantity of partitions to scale and meet growing resource requirements.
+## Types of Storage
+The Storage service in Azure is composed of four primary types of storage data:
+### Blob
+Storage blobs provide a way to store files so that they can be consumed by other components of your application or client devices. These blobs represent files and can be protected such that tokens are required to access the blob.
+
+### Table
+The Table service is a NoSQL store that is based on the document paradigm. Each entity consists of a partition key and a row key that together form a unique index. The entities then contain a collection of key-value pairs for the document’s attributes.
+
+### File
+File is a service that publishes a Server Message Block (SMB) 2.1 endpoint. This endpoint can be used by virtual machines in Azure in the same way as a shared drive.
+
+### Queue
+Storage queues are externally managed queues that can persist requests to be consumed by modules in your application. The queue is implemented in a traditional first in, first out (FIFO) pattern. These queues can be measured and requests can also be reviewed (peek) without removing them from the queue.
+
+## Key-Value NoSQL Stores
+A key-value store is a special type of NoSQL Database that stores data as collections of key-value pairs:
+- Key-value stores are popular because they are considered the simplest to implement among NoSQL stores. 
+- They are the foundation behind many NoSQL databases and the store type shares a lot of basic features with other NoSQL store types. Key-Value stores are also simple to sort using their keys.
+- At a lower level, a collection in a key-value store is composed of multiple key-value pairs. Each collection of key-value pairs is sometimes referred to as an entity. In the example below, the collection of key-value pairs compose a single entity:
