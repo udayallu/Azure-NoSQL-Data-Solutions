@@ -89,3 +89,36 @@ Before we dig into the NoSQL services available in Azure, the Azure SQL Database
 - Query a column with JSON text directly using JSON in the query language.
 
 - Format the results of a query as JSON.
+
+```
+SELECT TOP(1)
+    CustomerID AS "id",
+    FirstName AS "first",
+    LastName AS "last",
+    CompanyName AS "company"
+FROM SalesLT.Customer
+FOR JSON AUTO
+```
+
+So I'd like to create some type of contact object and also a root object
+
+```
+
+{
+    "Customers": [
+        {
+            "id": 1,
+            "name": {
+                "first": "Orlando",
+                "last": "Gee"
+            },
+            "company": "A Bike Store",
+            "contact": {
+                "email": "orlando0@adventure-works.com",
+                "phone": "245-555-0173"
+            }
+        }
+    ]
+}
+
+```
