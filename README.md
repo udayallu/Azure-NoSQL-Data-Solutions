@@ -147,3 +147,9 @@ A key-value store is a special type of NoSQL Database that stores data as collec
 - Key-value stores are popular because they are considered the simplest to implement among NoSQL stores. 
 - They are the foundation behind many NoSQL databases and the store type shares a lot of basic features with other NoSQL store types. Key-Value stores are also simple to sort using their keys.
 - At a lower level, a collection in a key-value store is composed of multiple key-value pairs. Each collection of key-value pairs is sometimes referred to as an entity. In the example below, the collection of key-value pairs compose a single entity:
+
+## Azure Storage Tables
+
+- The Azure Storage Table service provides a non-relational database option for storage in Azure.
+- Storage Tables offer a mechanism to store loosely structured data that is automatically partitioned on a pre-defined key.\
+
