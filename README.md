@@ -1,4 +1,4 @@
-# Azure-NoSQL-Data-Solutions-
+# Azure-NoSQL-Data-Solutions
 will explore NoSQL technologies available to you both on-premise in Azure
 
 ## Introducing NoSQL Solutions in Azure:
@@ -99,6 +99,8 @@ SELECT TOP(1)
 FROM SalesLT.Customer
 FOR JSON AUTO
 ```
+![alt text](https://github.com/udayallu/Azure-NoSQL-Data-Solutions-/blob/master/images/img1.PNG)
+
 
 So I'd like to create some type of contact object and also a root object
 
@@ -121,6 +123,7 @@ So I'd like to create some type of contact object and also a root object
     ]
 }
 
+![alt text](https://github.com/udayallu/Azure-NoSQL-Data-Solutions-/blob/master/images/img1.PNG)
 ```
 ## Azure Storage
 
@@ -148,8 +151,140 @@ A key-value store is a special type of NoSQL Database that stores data as collec
 - They are the foundation behind many NoSQL databases and the store type shares a lot of basic features with other NoSQL store types. Key-Value stores are also simple to sort using their keys.
 - At a lower level, a collection in a key-value store is composed of multiple key-value pairs. Each collection of key-value pairs is sometimes referred to as an entity. In the example below, the collection of key-value pairs compose a single entity:
 
+![alt text](https://github.com/udayallu/Azure-NoSQL-Data-Solutions-/blob/master/images/img3.PNG)
 ## Azure Storage Tables
 
 - The Azure Storage Table service provides a non-relational database option for storage in Azure.
-- Storage Tables offer a mechanism to store loosely structured data that is automatically partitioned on a pre-defined key.\
+- Storage Tables offer a mechanism to store loosely structured data that is automatically partitioned on a pre-defined key.
+![alt text](https://github.com/udayallu/Azure-NoSQL-Data-Solutions-/blob/master/images/img4.PNG)
+![alt text](https://github.com/udayallu/Azure-NoSQL-Data-Solutions-/blob/master/images/img5.PNG)
+
+## Initializing Azure Storage Tables
+- To **create** an Azure Storage Table instance, you must first create an Azure Storage account. All Storage Table instance must be created within an Azure Storage account.
+- For example, you may create an Azure Storage account named schooldata. The URI for this Azure Storage Account would be:
+```
+http://schooldata.[name of service].core.windows.net/
+```
+- If you would like to create a Table instance, you can either use an SDK, command-line interface or other tool to create a Table instance within the schooldata Storage account.
+
+- Any tool you use would inevitably use the Azure Storage REST API to perform the specific actions. Specifically, creating a Storage Table instance would require a HTTP request using the POST method against the following URI:
+```
+http://schooldata.table.core.windows.net/Tables
+```
+- The request must include a body specifying the name of the table:
+```
+{
+  "TableName": "classrooms"
+}
+```
+
+## Installing Azure CLI 2.0
+
+## Steps
+
+1. First, you must ensure that you have Python 3.5 installed on your local machine.
+
+2. If you are using a Linux distribution, you should install specific prerequisites listed as this link: https://docs.microsoft.com/en-us/cli/azure/install-azure-cli.
+
+3. Open the command-line interface application for your operating system:
+- Windows: Command Prompt
+- Mac/Linux: Terminal
+- Note: Leave the application open for the remainder of this lab as you will be using it to manage your resources.
+- Linux and OSX: Install the CLI using the following curl command:
+```
+curl -L https://aka.ms/InstallAzureCli | bash
+```
+Restart your command-line interface application for the changes to take effect.
+
+4. Windows: Install the CLI using the pip tool.
+```
+pip install --user azure-cli
+```
+
+## Login in to the cli and creating the table ( use power shell in windows)
+1. Use the following command to validate that the Azure CLI 2.0 tool is installed. You should see a description of potential commands:
+```
+az --help
+```
+2. Use the interactive **login** to log in to Azure using your enterprise credentials or Microsoft account identity:
+```
+az login
+```
+![alt text](https://github.com/udayallu/Azure-NoSQL-Data-Solutions-/blob/master/images/img6.PNG)
+3. Open a browser and navigate to **https://aka.ms/devicelogin** . The command prompt will display a device code that you can use to authenticate to Azure.
+![alt text](https://github.com/udayallu/Azure-NoSQL-Data-Solutions-/blob/master/images/img7.PNG)
+4. Once you enter the code, you will be prompted to allow access to the Microsoft Azure CLI. Click Continue.
+![alt text](https://github.com/udayallu/Azure-NoSQL-Data-Solutions-/blob/master/images/img8.PNG)
+5. Sign in using your identity associated with your Azure subscription.
+6. Once you receive confirmation that you are signed in, you can close your browser window.
+
+### Creating the Tables
+1. connecting to the storage account
+```
+az storage account show -g UdayAlluRes -n udaydatastorage
+```
+![alt text](https://github.com/udayallu/Azure-NoSQL-Data-Solutions-/blob/master/images/img8.PNG)
+2. saving the connection string to the environment varaible
+```
+$env:AZURE_STORAGE_CONNECTION_STRING = $(az storage account show-connection-string -g UdayAlluRes -n udaydatastorage)
+```
+![alt text](https://github.com/udayallu/Azure-NoSQL-Data-Solutions-/blob/master/images/img9.PNG)
+3. Creating a table called **DemoTable**
+```
+az storage table create -n DemoTable
+```
+![alt text](https://github.com/udayallu/Azure-NoSQL-Data-Solutions-/blob/master/images/img10.PNG)
+4.  Inserting the Data into the created table
+```
+az storage entity insert -t DemoTable -e PartitionKey=Students RowKey=asimpson
+Age=12 Grade=4
+```
+![alt text](https://github.com/udayallu/Azure-NoSQL-Data-Solutions-/blob/master/images/img11.PNG)
+5. Inserting new partition teacher
+```
+az storage entity insert -t DemoTable -e PartitionKey=Teachers RowKey=gwilliam Age=31
+```
+![alt text](https://github.com/udayallu/Azure-NoSQL-Data-Solutions-/blob/master/images/img12.PNG)
+6. Checking the Table
+```
+az storage entity query -t DemoTable
+```
+![alt text](https://github.com/udayallu/Azure-NoSQL-Data-Solutions-/blob/master/images/img13.PNG)
+7. Filter 1
+```
+az storage entity query -t DemoTable --filter "Age gt 25"
+```
+![alt text](https://github.com/udayallu/Azure-NoSQL-Data-Solutions-/blob/master/images/img14.PNG)
+8. Filter 2
+```
+az storage entity query -t DemoTable --filter "PartitionKey eq 'Students'"
+```
+![alt text](https://github.com/udayallu/Azure-NoSQL-Data-Solutions-/blob/master/images/img15.PNG)
+
+## Flexible Schema
+- Entities are truly only stored as a collection of key-value pairs. This means that two entities in the same table do not necessarily need to share the same schema. In a basic table, you could have two entities like these examples:
+
+- For example, we have an entity that represents a student. In this Storage Table instance, students are partitioned by the school they attend and the row key is their student ID. This student entity only starts with a key-value pair for the First Name and Last Name fields:
+![alt text](https://github.com/udayallu/Azure-NoSQL-Data-Solutions-/blob/master/images/img16.PNG)
+
+- Let's assume that you need to update this entity. For this entity, you have discovered that the Storage account is named cornfielddistrict and the table is named students. You need to update the student to a new age of 12. You also need to add a key-value pair indicating that the student now plays Tennis as her sport of choice.
+
+- Your updated entity will now look like this:\
+![alt text](https://github.com/udayallu/Azure-NoSQL-Data-Solutions-/blob/master/images/img17.PNG)
+
+### Partitions
+- In the context of the Table service, Tables are sets of entities that are related but do not necessarily share the same schema. Each table has a Sharding pattern1 implementation (called partitions) where data in the same partition will be stored on the same server.
+
+- This pattern ensures that data in the same partition can be accessed very quickly. Inversely, data across partitions typically is accessed in a much slower manner that can be resource-expensive to your application.
+
+Let's look at the following logical structure:
+![alt text](https://github.com/udayallu/Azure-NoSQL-Data-Solutions-/blob/master/images/img18.PNG)
+
+Partitions in Storage Tables
+
+- In this very basic example, you can see that each partition is stored on a separate physical server. A query that would return both the poster and wallpaper entities would be slow because it would most likely be performed over multiple servers. With this information, we can inversely infer that queries over multiple entities within the same partition would be order of magnitudes faster than an entity across multiple partitions.
+## JSON Serialization
+- [Query Entities](https://docs.microsoft.com/en-us/rest/api/storageservices/query-entities)
+- [Insert Entities](https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/insert-entity)
+- [Table Service JSON Payload Types](https://docs.microsoft.com/en-us/rest/api/storageservices/payload-format-for-table-service-operations)
 
