@@ -288,3 +288,131 @@ Partitions in Storage Tables
 - [Insert Entities](https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/insert-entity)
 - [Table Service JSON Payload Types](https://docs.microsoft.com/en-us/rest/api/storageservices/payload-format-for-table-service-operations)
 
+## RESTful API for CRUD Operations
+### RESTful API for CRUD Operations
+- Storage Tables offer a set of transactional functionality that mirrors the traditional Create, Read, Update, Delete (CRUD) methods found in many other data sources.
+- Because of the CRUD model, you can use dedicated client libraries or REST API endpoints with HTTP methods to access and modify entities.
+![alt text](https://github.com/udayallu/Azure-NoSQL-Data-Solutions-/blob/master/images/img19.PNG)
+
+## Modifying Entities
+- When entities are modified, only key-value pairs that are specified in the body of the HTTP request are modified (either created or updated). Existing key-value pairs are not lost.
+
+- Let's return to an example from earlier in this module. To refresh, we have an entity that represents a student. In this Storage Table instance, students are partitioned by the school they attend and the row key is their student ID. This student entity only starts with a key-value pair for the First Name and Last Name fields:
+
+![alt text](https://github.com/udayallu/Azure-NoSQL-Data-Solutions-/blob/master/images/img20.PNG)
+Let's assume that you need to update this entity. For this entity, you have discovered that the Storage account is named cornfielddistrict and the table is named students. You need to update the student to a new age of 12. You also need to add a key-value pair indicating that the student now plays Tennis as her sport of choice.
+
+- To accomplish this, you would use the following URL and JSON payload:
+
+- PUT: https://cornfielddistrict.table.core.windows.net/students(appleorchardmiddle, 237548902)
+
+JSON Payload
+```
+"Age": 12,
+  "Sport": "Tennis"
+```
+
+![alt text](https://github.com/udayallu/Azure-NoSQL-Data-Solutions-/blob/master/images/img21.PNG)
+
+## OData Queries
+- Table Storage entities can also be accessed by using the OData protocol. The OData protocol provides a uniform way to query any data using an HTTP endpoint.
+- Traditionally in a RESTful service, the GET endpoint can only return either a specific item or all items. OData solves this by offering a query syntax that allows you to search for a single item or set of items from a collection using familiar a**HTTP GET** requests.
+- OData query parameters also allow you to filter, paginate, or project the result of your requests.
+-With Storage tables, you can use OData as an easy way to search for particular entities in a table. Parameters such as the filter * ,*top and $select are supported. Results can be returned in either the AtomPub1 or JSON2 format. Formats are specified by including an Accept header in your request.
+- **Note**: JSON is the most common format. Typically, JSON data provides up to a 70% reduction in bandwidth compared to XML-based 
+formats.
+- If you require a specific entity, the OData protocol provides a mechanism where you can retrieve a single entity in a collection by using the following URL format:
+
+- https://[base url]/resource
+- Storage tables deviate from the typical OData protocol by requiring you to specify both the row and partition keys. These form a composite index for an entity in Storage Tables:
+
+- https://[account].table.core.windows.net/table
+![alt text](https://github.com/udayallu/Azure-NoSQL-Data-Solutions-/blob/master/images/img22.PNG)
+
+## .NET Core and Azure Storage
+
+### Project.Json
+```
+{
+  "version": "1.0.0-*",
+  "buildOptions": {
+    "debugType": "portable",
+    "emitEntryPoint": true
+  },
+  "dependencies": {
+    "WindowsAzure.Storage": "8.1.0"
+  },
+  "frameworks": {
+    "netcoreapp1.0": {
+      "dependencies": {
+        "Microsoft.NETCore.App": {
+          "type": "platform",
+          "version": "1.0.0"
+        }
+      },
+      "imports": "dnxcore50"
+    }
+  }
+}
+```
+
+### Program.cs
+```
+using System;
+using System.Threading.Tasks;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Table;
+
+namespace ConsoleApplication
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            GetStorageData().Wait();
+        }
+
+        public static async Task GetStorageData()
+        {
+            var account = CloudStorageAccount.Parse("[connection string]");
+
+            var client = account.CreateCloudTableClient();
+
+            var table = client.GetTableReference("people");
+            await table.CreateIfNotExistsAsync();
+
+            var condition = TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, "Doe");
+            var query = new TableQuery<PersonEntity>().Where(condition);
+
+            TableContinuationToken token = null;
+            do
+            {
+                var segment = await table.ExecuteQuerySegmentedAsync(query, token);
+                token = segment.ContinuationToken;
+                foreach(var entity in segment)
+                {
+                    Console.WriteLine($"{entity.RowKey} {entity.PartitionKey} [Age: {entity.Age} | IsRetired: {entity.IsRetired} | Hometown: {entity.Hometown}]");
+                }
+            }
+            while (token != null);
+        }
+
+        public class PersonEntity : TableEntity
+        {
+            public PersonEntity(string lastName, string firstName)
+            {
+                this.PartitionKey = lastName;
+                this.RowKey = firstName;
+            }
+
+            public PersonEntity() { }
+
+            public int Age { get; set; }
+
+            public bool? IsRetired { get; set; }
+
+            public string Hometown { get; set; }
+        }
+    }
+}
+```
