@@ -39,7 +39,7 @@
 ### Populating Database Data
 
 1. Within the **Azure Storage Explorer** tool, locate the navigation menu on the left side. Expand the **Local and Attached** node and then right-click the **Storage Accounts** node. Select the **Connect** to Azure storage... option.
-2.In the Connect to Azure Storage dialog, perform the following actions:
+2. In the Connect to Azure Storage dialog, perform the following actions:
 - Select the Use a storage account name and key option.
 - Click the Next button.
 - Back in the tool, you should see a new node for your Storage account. Expand this node.
@@ -72,3 +72,7 @@
 - In the Table Name box, enter the value: products.
 - Click the Save Configuration button.
 11. Click the Dashboard link.
+
+![alt text](https://github.com/udayallu/Azure-NoSQL-Data-Solutions/blob/master/images/imgg.PNG)
+
+![alt text](https://github.com/udayallu/Azure-NoSQL-Data-Solutions/blob/master/images/imgg1.PNG)
