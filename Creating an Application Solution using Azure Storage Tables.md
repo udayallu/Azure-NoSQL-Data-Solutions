@@ -53,7 +53,7 @@
 
 ## Deploy and Test Web Application
 1. Click the following button to go to the Template Deployment blade in the Azure portal:[link](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure-Architecture-Workshop%2Fasset-tracking%2Fstoragetables%2Fdeploy%2Farmdeploy.json)
-2.Once you reach the Azure Portal, you will immediately see the Custom deployment blade. In the Custom deployment blade, perform the following actions:
+2. Once you reach the Azure Portal, you will immediately see the Custom deployment blade. In the Custom deployment blade, perform the following actions:
 - In the Resource Group section, select the Use existing option and then select the StorageTables Resource Group from the list.
 - In the Terms and Conditions section, read the Marketplace terms and then click the I agree to the terms and conditions stated above checkbox.
 - Click the Pin to dashboard checkbox to ensure that the Resource Group is visible on your dashboard and that the Resource Group is opened automatically when the deployment is complete.
