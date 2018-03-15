@@ -70,3 +70,25 @@ Important: Prior to getting starting with the hands-on exercises in this module,
 3. In the Document Explorer blade, locate the drop-down list at the top of the blade. In the list, select the customers collection within the ecommerce database.
 
 4. Click the Upload button at the top of the blade.
+
+##  Querying Documents using SQL Syntax
+
+1. In a new browser window, sign in to the Azure Portal (https://portal.azure.com).
+
+2. In the Jumpbar, click More Services, locate the Databases section, and then click Azure Cosmos DB.
+
+3. In the Azure Cosmos DB blade that opens, locate and click the Azure Cosmos DB account instance you created earlier in this module.
+
+4. In the menu on the left-side of the Azure Cosmos DB account blade, locate the Collections section and then click the Query Explorer option in the menu.
+5. In the Query Explorer blade, select the **ecommerce** database and the customers collection.
+6. In the query editor, replace the current query with the following query:
+```
+SELECT *
+FROM customers
+```
+- In the Query Explorer blade, locate the query editor and replace the current query with the following query:
+```
+SELECT *
+FROM customers
+WHERE customers.source = "direct-mail"
+```
