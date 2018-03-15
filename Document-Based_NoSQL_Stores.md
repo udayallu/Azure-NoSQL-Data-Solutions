@@ -61,6 +61,7 @@ Important: Prior to getting starting with the hands-on exercises in this module,
 5. In the Throughput (400 - 10,000 RU/s) section, enter the value 400 in the numeric box.
 
 6. Click the OK button.
+![alt text](https://github.com/udayallu/Azure-NoSQL-Data-Solutions/blob/master/images/cimg1)
 
 ### Uploading the data
 1. Wait for the “Creating collection customers” operation to complete.
@@ -70,7 +71,7 @@ Important: Prior to getting starting with the hands-on exercises in this module,
 3. In the Document Explorer blade, locate the drop-down list at the top of the blade. In the list, select the customers collection within the ecommerce database.
 
 4. Click the Upload button at the top of the blade.
-
+![alt text](https://github.com/udayallu/Azure-NoSQL-Data-Solutions/blob/master/images/cimg2)
 ##  Querying Documents using SQL Syntax
 
 1. In a new browser window, sign in to the Azure Portal (https://portal.azure.com).
@@ -87,8 +88,10 @@ SELECT *
 FROM customers
 ```
 - In the Query Explorer blade, locate the query editor and replace the current query with the following query:
+![alt text](https://github.com/udayallu/Azure-NoSQL-Data-Solutions/blob/master/images/cimg4)
 ```
 SELECT *
 FROM customers
 WHERE customers.source = "direct-mail"
 ```
+![alt text](https://github.com/udayallu/Azure-NoSQL-Data-Solutions/blob/master/images/cimg5)
